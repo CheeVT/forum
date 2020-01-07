@@ -1,0 +1,12 @@
+.thread .card-body {
+  background-color: rgba(0, 0, 0, 0.09);
+  font-weight: 500;
+}
+.thread__author span {
+  font-weight: 600;
+}
+.thread__created-at {
+  border-left: 1px solid #000;
+  padding-left: 7px;
+  margin-left: 7px;
+}
