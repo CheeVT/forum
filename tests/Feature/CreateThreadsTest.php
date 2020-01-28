@@ -2,21 +2,35 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateThreadsTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
+    use DatabaseMigrations;
 
-        $response->assertStatus(200);
+    /** @test */
+    function guest_cannot_create_new_threads() {
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withoutExceptionHandling();
+
+        $thread = factory('App\Thread')->create();
+
+        $this->post('/threads', $thread->toArray());
+    }
+
+    /** @test */
+    function an_authenticated_user_can_create_new_threads() {
+        $this->authenticatedUser();
+
+        $thread = factory('App\Thread')->create();
+
+        $this->post('/threads', $thread->toArray());
+
+        $this->get($thread->show_url())
+            ->assertSee($thread->title)
+            ->assertSee($thread->body);
     }
 }
