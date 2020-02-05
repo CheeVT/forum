@@ -1,8 +1,8 @@
 <?php
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ThreadTest extends TestCase
 {
@@ -39,6 +39,13 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    function a_thread_belongs_to_a_board() {
+        $thread = create('App\Thread');
+
+        $this->assertInstanceOf('App\Board', $thread->board);
     }
 
 }
