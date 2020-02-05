@@ -20,6 +20,10 @@ class Thread extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function board() {
+        return $this->belongsTo(Board::class, 'board_id');
+    }
+
     public function show_url() {
         return route('threads.show', ['thread' => $this]);
     }
