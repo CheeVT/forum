@@ -28,7 +28,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_read_single_thread() {
 
-        $response = $this->get('/threads/' . $this->thread->id);
+        $response = $this->get('/threads/' . $this->thread->board->slug . '/' . $this->thread->id);
         $response->assertSee($this->thread->title);
     }
 
@@ -36,7 +36,7 @@ class ReadThreadsTest extends TestCase
     public function a_user_can_read_replies_of_thread() {
         $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
 
-        $response = $this->get('/threads/' . $this->thread->id)
+        $response = $this->get('/threads/' . $this->thread->board->slug . '/' . $this->thread->id)
             ->assertSee($reply->body);
 
     }
