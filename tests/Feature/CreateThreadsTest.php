@@ -40,4 +40,35 @@ class CreateThreadsTest extends TestCase
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
+
+    /** @test */
+    function a_thread_requires_a_title() {
+        $this->publishThread(['title' => null])
+            ->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    function a_thread_requires_a_body() {
+        $this->publishThread(['body' => null])
+            ->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    function a_thread_requires_a_valid_board() {
+        factory('App\Board', 3)->create();
+
+        $this->publishThread(['board_id' => null])
+            ->assertSessionHasErrors('board_id');
+
+        $this->publishThread(['board_id' => 5])
+            ->assertSessionHasErrors('board_id');
+    }
+
+    protected function publishThread($overrides = []) {
+        $this->authenticatedUser();
+
+        $thread = make('App\Thread', $overrides);
+
+        return $this->post('/threads', $thread->toArray());
+    }
 }
