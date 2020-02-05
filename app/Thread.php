@@ -25,6 +25,6 @@ class Thread extends Model
     }
 
     public function show_url() {
-        return route('threads.show', ['thread' => $this]);
+        return route('threads.show', ['board' => $this->board->slug, 'thread' => $this]);
     }
 }
