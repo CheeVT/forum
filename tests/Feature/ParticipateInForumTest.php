@@ -18,12 +18,8 @@ class ParticipateInForumTest extends TestCase
         $this->expectException('Illuminate\Auth\AuthenticationException');
         $this->withoutExceptionHandling();
 
-        $thread = factory('App\Thread')->create();
-
-        $reply = factory('App\Reply')->make();
-
-        $response = $this->post('/threads/' . $thread . '/replies', $reply->toArray());
-        $response->assertRedirect('/login');
+        $this->post('/threads/1/replies', [])
+            ->assertRedirect('/login');
     }
 
     /** @test */
