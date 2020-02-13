@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Board;
 use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,14 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Board $board)
     {
-        $threads = Thread::latest()->get();
+        if($board->exists) {
+            $threads = $board->threads()->latest()->get();
+        } else {
+
+            $threads = Thread::latest()->get();
+        }
         return view('threads.index', compact('threads'));
     }
 

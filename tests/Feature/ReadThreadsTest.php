@@ -40,4 +40,15 @@ class ReadThreadsTest extends TestCase
             ->assertSee($reply->body);
 
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_according_to_a_board() {
+        $board = create('App\Board');
+        $threadInBoard = create('App\Thread', ['board_id' => $board->id]);
+        $threadNotInBoard = create('App\Thread');
+
+        $this->get('/threads/' . $board->slug)
+            ->assertSee($threadInBoard->title)
+            ->assertDontSee($threadNotInBoard->title);
+    }
 }

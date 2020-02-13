@@ -24,4 +24,6 @@ Route::get('/threads/create', 'ThreadsController@create')->name('threads.create'
 Route::get('/threads/{board}/{thread}', 'ThreadsController@show')->name('threads.show');
 Route::post('/threads', 'ThreadsController@store')->name('threads.store');
 
+Route::get('/threads/{board}', 'ThreadsController@index')->name('threads.board');
+
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store')->middleware('auth');
