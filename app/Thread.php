@@ -4,10 +4,19 @@ namespace App;
 
 use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model
 {
     protected $guarded = [];
+
+    protected static function boot() {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function($builder) {
+            $builder->withCount('replies');
+        });
+    }
 
     public function addReply($reply) {
         $this->replies()->create($reply);
