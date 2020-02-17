@@ -25,7 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \View::share('boards', Board::all());
+        //\View::share('boards', Board::all());
+        \View::composer('*', function($view) {
+            $view->with('boards', Board::all());
+        });
         Schema::defaultStringLength(191);
     }
 }
