@@ -41,7 +41,7 @@
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach (App\Board::all() as $board)
+                                @foreach ($boards as $board)
                                     <a href="/threads/{{ $board->slug }}" class="dropdown-item">{{ $board->name }}</a>
                                 @endforeach
                             </div>

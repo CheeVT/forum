@@ -23,8 +23,8 @@
                         <label for="board_id">Board</label>
                         <select name="board_id" id="board_id" class="form-control">
                           <option value="">Choose a board</option>
-                          @foreach(\App\Board::all() as $board)
-                            <option value="{{ $board->id }}" {{ old('board_id') == $board->id ? 'selected' : '' }}>{{ $board->name }}</option>
+                          @foreach($boards as $board)
+                            <option value="{{ $board->id }}" {{ ( old('board_id') == $board->id ) ? 'selected' : '' }}>{{ $board->name }}</option>
                           @endforeach
                         </select>
                       </div>
