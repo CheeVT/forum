@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -26,5 +27,9 @@ class Thread extends Model
 
     public function show_url() {
         return route('threads.show', ['board' => $this->board->slug, 'thread' => $this]);
+    }
+
+    public function scopeFilter($query, ThreadFilters $filters) {
+        return $filters->apply($query);
     }
 }
