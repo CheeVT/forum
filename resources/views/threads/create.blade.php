@@ -12,14 +12,37 @@
                       @csrf
                       <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title" id="title" class="form-control">
+                        <input type="text" name="title" value="{{ old('title') }}" id="title" class="form-control">
                       </div>
                       <div class="form-group">
                         <label for="body">Body</label>
-                        <textarea name="body" id="body" cols="30" rows="10" class="form-control"></textarea>
+                        <textarea name="body" id="body" cols="30" rows="10" class="form-control">{{ old('body') }}</textarea>
                       </div>
 
-                      <button type="submit">Publish</button>
+                      <div class="form-group">
+                        <label for="board_id">Board</label>
+                        <select name="board_id" id="board_id" class="form-control">
+                          <option value="">Choose a board</option>
+                          @foreach(\App\Board::all() as $board)
+                            <option value="{{ $board->id }}" {{ old('board_id') == $board->id ? 'selected' : '' }}>{{ $board->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <button type="submit">Publish</button>
+                      </div>
+
+                      @if(count($errors))
+                        @foreach($errors->all() as $error)
+                          <div class="alert alert-danger" role="alert">
+                            {{ $error }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        @endforeach
+                      @endif
                     </form>
                 </div>
             </div>
