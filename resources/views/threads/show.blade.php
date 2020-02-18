@@ -45,7 +45,7 @@
         <div class="card card-default">
           <div class="card-body">
             <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
-              <a href="#">{{ $thread->owner->name }}</a>, and currently has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies_count) }}.
+              <a href="#">{{ $thread->owner->name }}</a>, and currently has {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}.
           </div>
         </div>
       </div>
