@@ -56,6 +56,10 @@
                                 @endforeach
                             </div>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('threads.index') }}?popular=1" class="nav-link">Popular</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
