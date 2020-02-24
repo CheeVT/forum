@@ -74,6 +74,7 @@ class ThreadsController extends Controller
      */
     public function show($boardId, Thread $thread)
     {
+        //return $thread->replies;
         //return view('threads.show', compact('thread'));
         return view('threads.show', [
             'thread' => $thread,

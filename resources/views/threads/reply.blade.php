@@ -7,7 +7,7 @@
     <div>
       <form action="{{ route('favorites.store', ['reply' => $reply]) }}" method="POST">
         @csrf
-        <button type="submit" {{ !$reply->favorites()->exists() ?: 'disabled' }}>{{ $reply->favorites()->count() }} {{ str_plural('Like', $reply->favorites()->count()) }}</button>
+        <button type="submit" {{ !$reply->isFavorited() ?: 'disabled' }}>{{ $reply->favorites_count }} {{ str_plural('Like', $reply->favorites_count) }}</button>
       </form>
     </div>
   </div>
