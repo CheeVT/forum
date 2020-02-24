@@ -11,7 +11,7 @@ trait Favoritable {
 
   public function favorite() {
       $attributes = ['user_id' => auth()->id()];
-      if(!! $this->favorites->where($attributes)->count()) {
+      if(! $this->favorites()->where($attributes)->exists()) {
           return $this->favorites()->create($attributes);
       }
   }

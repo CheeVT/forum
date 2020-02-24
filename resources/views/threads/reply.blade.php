@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header article-header">
     <div class="article-header--title">
-      <a href="#">{{ $reply->user->name }}</a> - 
+      <a href="{{ route('profiles.show', $reply->user) }}">{{ $reply->user->name }}</a> - 
       {{ $reply->created_at->diffForHumans() }}
     </div>
     <div>

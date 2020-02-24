@@ -7,7 +7,7 @@
           <div class="card">
               <div class="card-header">
                 <h2>{{ $thread->title }}</h2>
-                <span class="thread__author">Created by: <span>{{ $thread->owner->name }}</span></span>
+                <span class="thread__author">Created by: <a href="{{ route('profiles.show', $thread->owner) }}"><span>{{ $thread->owner->name }}</span></a></span>
                 <span class="thread__created-at">{{ date( 'd.m.Y. h:i', strtotime( $thread->created_at ) ) }}</span>
               </div>
 

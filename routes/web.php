@@ -27,3 +27,5 @@ Route::get('/threads/{board}', 'ThreadsController@index')->name('threads.board')
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store')->middleware('auth');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('favorites.store');
+
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
