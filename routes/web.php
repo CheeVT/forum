@@ -25,6 +25,7 @@ Route::get('/threads/{board}/{thread}', 'ThreadsController@show')->name('threads
 Route::post('/threads', 'ThreadsController@store')->name('threads.store');
 Route::get('/threads/{board}', 'ThreadsController@index')->name('threads.board');
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store')->middleware('auth');
+Route::delete('/threads/{board}/{thread}', 'ThreadsController@destroy')->name('threads.destroy');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('favorites.store');
 

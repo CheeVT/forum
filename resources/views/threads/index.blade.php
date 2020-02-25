@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card-header">Forum Threads</div>
             
-                @foreach ($threads as $thread)
+                @forelse ($threads as $thread)
                     <div class="card mb-3">
                         <div class="card-header">
                                 <div class="article-header">
@@ -25,7 +25,9 @@
                             <hr>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p>There is not any threads</p>
+                @endforelse
         </div>
     </div>
 </div>
