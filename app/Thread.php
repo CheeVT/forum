@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model
 {
+    use RecordActivity;
+    
     protected $guarded = [];
 
     protected $with = ['owner', 'board'];
@@ -21,8 +23,8 @@ class Thread extends Model
 
         static::deleting(function($thread) {
             $thread->replies()->delete();
-        });
-    }
+        });        
+    }    
 
     public function addReply($reply) {
         $this->replies()->create($reply);
