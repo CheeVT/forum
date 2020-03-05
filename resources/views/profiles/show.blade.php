@@ -9,18 +9,11 @@
       </h1>
     </div>
 
-    @foreach($threads as $thread)
-      <div class="card">
-        <div class="card-header">
-          <h2>{{ $thread->title }}</h2>
-          <span class="thread__author">Created by: <span>{{ $thread->owner->name }}</span></span>
-          <span class="thread__created-at">{{ date( 'd.m.Y. h:i', strtotime( $thread->created_at ) ) }}</span>
-        </div>
-
-        <div class="card-body">
-            {{ $thread->body }}
-        </div>
-      </div>
+    @foreach($activities as $date => $records)
+      <h3 class="page-header">{{ $date }}</h3>
+      @foreach($records as $activity)
+        @include("profiles.activities.{$activity->type}")
+      @endforeach
     @endforeach
 </div>
 @endsection
