@@ -10,7 +10,11 @@ trait RecordActivity {
       static::$event(function($model) use($event) {
         $model->recordActivity($event);
       });
-    }    
+    }
+
+    static::deleting(function($model) {
+      $model->activities()->delete();
+    });
 
   }
 
