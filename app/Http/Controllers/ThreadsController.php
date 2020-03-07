@@ -63,7 +63,8 @@ class ThreadsController extends Controller
             'board_id' => $request->board_id
         ]);
 
-        return redirect($thread->show_url());
+        return redirect($thread->show_url())
+            ->with('flash', 'Created a new thread.');
     }
 
     /**
