@@ -19,4 +19,8 @@ class Reply extends Model
     public function thread() {
         return $this->belongsTo(Thread::class);
     }
+
+    public function show_url() {
+        return $this->thread->show_url() . '#reply-' . $this->id;
+    }
 }
