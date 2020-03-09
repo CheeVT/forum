@@ -16,11 +16,11 @@
   </div>
     @can ('delete', $reply)
       <div class="panel-footer">
-          <form method="POST" action="/replies/{{ $reply->id }}">
+          <form method="POST" action="{{ route('replies.destroy', $reply) }}" style="text-align: right;">
               {{ csrf_field() }}
               {{ method_field('DELETE') }}
 
-              <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+              <button type="submit" class="btn btn-danger btn-xs align-right">Delete</button>
           </form>
       </div>
     @endcan
