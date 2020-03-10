@@ -18,7 +18,16 @@ export default {
 
       this.editing = false;
 
-      flashMessage('Reply has updated!');
+      flashMessage('Reply has been updated!');
+    },
+    destroy() {
+      axios.delete(`/replies/${this.attributes.id}`).then(response => {
+        if(response.status == 200) {
+          $(this.$el).fadeOut(300, function() {
+            flashMessage('Reply has been deleted!');
+          })
+        }
+      })
     }
   }
 }
