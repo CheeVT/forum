@@ -27,6 +27,12 @@
         .article-header--title {
             flex: 1;
         }
+
+        .panel-footer--reply {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 10px 10px 0;
+        }
     </style>
 </head>
 <body>

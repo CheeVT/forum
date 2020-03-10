@@ -22,16 +22,16 @@
       </div>
       <div v-else v-text="body"></div>
     </div>
-      @can ('delete', $reply)
-        <div class="panel-footer" style="text-align: right;">
-            <button class="btn btn-xs mr-1" @click="editing = true">Edit</button>
-            <form method="POST" action="{{ route('replies.destroy', $reply) }}">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
+    @can ('delete', $reply)
+      <div class="panel-footer panel-footer--reply">
+          <button class="btn btn-sm mr-1" @click="editing = true">Edit</button>
+          <form method="POST" action="{{ route('replies.destroy', $reply) }}">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
 
-                <button type="submit" class="btn btn-danger btn-xs align-right">Delete</button>
-            </form>
-        </div>
-      @endcan
+              <button type="submit" class="btn btn-danger btn-sm align-right">Delete</button>
+          </form>
+      </div>
+    @endcan
   </div>
 </reply-component>
