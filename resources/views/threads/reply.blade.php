@@ -6,10 +6,11 @@
         {{ $reply->created_at->diffForHumans() }}
       </div>
       <div>
-        <form action="{{ route('favorites.store', ['reply' => $reply]) }}" method="POST">
+        <favorite :reply="{{ $reply }}"></favorite>
+        {{--  <form action="{{ route('favorites.store', ['reply' => $reply]) }}" method="POST">
           @csrf
           <button type="submit" {{ !$reply->isFavorited() ? 'disabled' : '' }}>{{ $reply->favorites_count }} {{ str_plural('Like', $reply->favorites_count) }}</button>
-        </form>
+        </form>  --}}
       </div>
     </div>
     <div class="card-body">
