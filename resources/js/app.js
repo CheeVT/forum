@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('flash-message', require('./components/FlashMessageComponent.vue').default);
+Vue.component('reply-component', require('./components/ReplyComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

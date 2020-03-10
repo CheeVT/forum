@@ -43,6 +43,5 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.events = new Vue();
 
 window.flashMessage = function (message) {
-    console.log('fdsfsdf', message)
     window.events.$emit('flashMessage', message)
 }
