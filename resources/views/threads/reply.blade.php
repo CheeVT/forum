@@ -5,6 +5,7 @@
         <a href="{{ route('profiles.show', $reply->user) }}">{{ $reply->user->name }}</a> - 
         {{ $reply->created_at->diffForHumans() }}
       </div>
+      @if(Auth::check())
       <div>
         <favorite :reply="{{ $reply }}"></favorite>
         {{--  <form action="{{ route('favorites.store', ['reply' => $reply]) }}" method="POST">
@@ -12,6 +13,7 @@
           <button type="submit" {{ !$reply->isFavorited() ? 'disabled' : '' }}>{{ $reply->favorites_count }} {{ str_plural('Like', $reply->favorites_count) }}</button>
         </form>  --}}
       </div>
+      @endif
     </div>
     <div class="card-body">
       <div v-if="editing">

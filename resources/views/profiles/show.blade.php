@@ -9,13 +9,15 @@
       </h1>
     </div>
 
-    @foreach($activities as $date => $records)
+    @forelse($activities as $date => $records)
       <h3 class="page-header">{{ $date }}</h3>
       @foreach($records as $activity)
         @if(view()->exists("profiles.activities.{$activity->type}"))
           @include("profiles.activities.{$activity->type}")
         @endif
       @endforeach
-    @endforeach
+    @empty
+      <p>There is no activity for this user yet!</p>
+    @endforelse
 </div>
 @endsection
