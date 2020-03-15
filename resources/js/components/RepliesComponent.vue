@@ -4,34 +4,48 @@
       <reply :data="reply" @deleted="remove(index)"></reply>
     </div>
 
+    <paginator :dataSet="dataSet" @fetchByPage="fetch"></paginator>
+
     <new-reply :endpoint="endpoint" @created="add"></new-reply>
   </div>
 </template>
 
 <script>
+import Paginator from './Paginator';
 import Reply from './ReplyComponent';
 import NewReply from './NewReplyComponent';
+import collection from '../mixins/collection';
 export default {
-  props: ['data', 'threadId'],
-  components: { Reply, NewReply },
+  props: ['threadId'],
+  components: { Reply, NewReply, Paginator },
+  mixins: [collection],
   data() {
     return {
-      items: this.data,
+      dataSet: false,
+      items: [],
       endpoint: `/threads/${this.threadId}/replies`
     }
   },
+  created() {
+    this.fetch();
+  },
   methods: {
-    add(reply) {
-      this.items.push(reply);
-
-      this.$emit('added');
+    fetch(page) {
+      axios.get(this.url(page))
+        .then(this.refresh);
     },
-    remove(index) {
-      this.items.splice(index, 1);
 
-      this.$emit('removed');
+    url(page) {
+      if(!page) {
+        let queryPage = location.search.match(/page=(\d+)/);
+        page = queryPage ? queryPage[1] : 1;
+      }
+      return `${location.pathname}/replies?page=${page}`;
+    },
 
-      flashMessage('Reply has been deleted!');
+    refresh(response) {
+      this.dataSet = response.data;
+      this.items = response.data.data;
     }
   }
 }
