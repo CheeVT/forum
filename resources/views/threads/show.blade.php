@@ -27,29 +27,12 @@
               </div>
             </div>
 
-            <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+            <replies :data="{{ $thread->replies }}" :thread-id="{{ $thread->id }}" @removed="repliesCount--" @added="repliesCount++"></replies>
            
 
             {{-- <div class="pt-3">
               {{ $replies->links() }}
-            </div> --}}
-              
-            <div class="reply-store">
-              @if( auth()->check() )
-                <form action="{{ route( 'replies.store', [ 'thread' => $thread ] ) }}" method="POST">
-                  @csrf
-                  <div class="form-group">
-                    <label for="body">Add reply</label>
-                    <textarea name="body" id="body" rows="10" class="form-control" placeholder="If you have something to say, fill in and submit :-)"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                  </div>
-                </form>
-              @else
-                <p>Please sign in if you want to reply to this topic!</p>
-              @endif
-            </div>
+            </div> --}}              
         </div>
         <div class="col-md-4">
           <div class="card card-default">
