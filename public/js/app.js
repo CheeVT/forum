@@ -2131,6 +2131,7 @@ __webpack_require__.r(__webpack_exports__);
     refresh: function refresh(response) {
       this.dataSet = response.data;
       this.items = response.data.data;
+      window.scrollTo(0, 0);
     }
   }
 });

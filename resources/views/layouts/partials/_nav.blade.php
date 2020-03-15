@@ -10,7 +10,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav mr-auto">
-              <li class="nav-item"><a href="{{ route('threads.index') }}" class="nav-link">All Threads</a></li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Browse
+                  </a>
+
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a href="{{ route('threads.index') }}" class="dropdown-item">All Threads</a>
+                    <a href="{{ route('threads.index') }}?popular=1" class="dropdown-item">Popular Trheads</a>
+                    <a href="{{ route('threads.index') }}?unanswered=1" class="dropdown-item">Unanswered Threads</a>
+                  </div>
+              </li>
 
               <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,10 +32,6 @@
                           <a href="/threads/{{ $board->slug }}" class="dropdown-item">{{ $board->name }}</a>
                       @endforeach
                   </div>
-              </li>
-
-              <li class="nav-item">
-                  <a href="{{ route('threads.index') }}?popular=1" class="nav-link">Popular</a>
               </li>
           </ul>
 
