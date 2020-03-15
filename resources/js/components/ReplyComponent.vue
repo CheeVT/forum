@@ -3,7 +3,7 @@
     <div class="card-header article-header">
       <div class="article-header--title">
         <a :href="`/profiles/${reply.user.name}`" v-text="reply.user.name"></a> - 
-        {{ reply.created_at }}
+        <span v-text="createdAt"></span>
       </div>
 
        <div v-if="loggedIn">
@@ -32,6 +32,7 @@
 <script>
 
 import FavoriteComponent from './FavoriteComponent';
+import moment from 'moment';
 
 export default {
   props: ['data'],
@@ -49,6 +50,9 @@ export default {
     },
     canUpdate() {
       return this.authorize(user => this.data.user_id == user.id);
+    },
+    createdAt() {
+      return moment(this.data.created_at).fromNow();
     }
   },
   methods: {
