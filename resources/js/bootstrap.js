@@ -22,6 +22,7 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.App.csrfToken;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -45,3 +46,13 @@ window.events = new Vue();
 window.flashMessage = function (message) {
     window.events.$emit('flashMessage', message)
 }
+
+Vue.prototype.authorize = function (handler) {
+    let user = window.App.user;
+
+    return user ? handler(user) : false;
+
+    /*if( !user ) return false;
+
+    return handler(user);  */
+};

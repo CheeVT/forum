@@ -2033,6 +2033,18 @@ __webpack_require__.r(__webpack_exports__);
       reply: this.data
     };
   },
+  computed: {
+    loggedIn: function loggedIn() {
+      return window.App.loggedIn;
+    },
+    canUpdate: function canUpdate() {
+      var _this = this;
+
+      return this.authorize(function (user) {
+        return _this.data.user_id == user.id;
+      });
+    }
+  },
   methods: {
     update: function update() {
       axios.patch("/replies/".concat(this.data.id), {
@@ -2042,10 +2054,10 @@ __webpack_require__.r(__webpack_exports__);
       flashMessage('Reply has been updated!');
     },
     destroy: function destroy() {
-      var _this = this;
+      var _this2 = this;
 
       axios["delete"]("/replies/".concat(this.data.id)).then(function (response) {
-        _this.$emit('deleted', _this.data.id);
+        _this2.$emit('deleted', _this2.data.id);
         /*if(response.status == 200) {
           $(this.$el).fadeOut(300, function() {
             flashMessage('Reply has been deleted!');
@@ -38242,7 +38254,11 @@ var render = function() {
             domProps: { textContent: _vm._s(_vm.reply.user.name) }
           }),
           _vm._v(" - \n      " + _vm._s(_vm.reply.created_at) + "\n    ")
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.loggedIn
+          ? _c("div", [_c("favorite", { attrs: { reply: _vm.reply } })], 1)
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -38296,29 +38312,31 @@ var render = function() {
           : _c("div", { domProps: { textContent: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "panel-footer panel-footer--reply" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-sm mr-1",
-            on: {
-              click: function($event) {
-                _vm.editing = true
-              }
-            }
-          },
-          [_vm._v("Edit")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-sm btn-danger mr-1",
-            on: { click: _vm.destroy }
-          },
-          [_vm._v("Delete")]
-        )
-      ])
+      _vm.canUpdate
+        ? _c("div", { staticClass: "panel-footer panel-footer--reply" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm mr-1",
+                on: {
+                  click: function($event) {
+                    _vm.editing = true
+                  }
+                }
+              },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm btn-danger mr-1",
+                on: { click: _vm.destroy }
+              },
+              [_vm._v("Delete")]
+            )
+          ])
+        : _vm._e()
     ]
   )
 }
@@ -50557,6 +50575,7 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.App.csrfToken;
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -50575,6 +50594,13 @@ window.events = new Vue();
 
 window.flashMessage = function (message) {
   window.events.$emit('flashMessage', message);
+};
+
+Vue.prototype.authorize = function (handler) {
+  var user = window.App.user;
+  return user ? handler(user) : false;
+  /*if( !user ) return false;
+   return handler(user);  */
 };
 
 /***/ }),

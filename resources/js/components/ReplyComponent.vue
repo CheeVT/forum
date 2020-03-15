@@ -5,11 +5,11 @@
         <a :href="`/profiles/${reply.user.name}`" v-text="reply.user.name"></a> - 
         {{ reply.created_at }}
       </div>
-      <!-- @if(Auth::check())
-       <div>
-        <favorite :reply="{{ $reply }}"></favorite>
+
+       <div v-if="loggedIn">
+        <favorite :reply="reply"></favorite>
       </div>
-      @endif -->
+
     </div>
     <div class="card-body">
       <div v-if="editing">
@@ -22,7 +22,7 @@
       <div v-else v-text="body"></div>
     </div>
     <!-- @can ('delete', $reply) -->
-      <div class="panel-footer panel-footer--reply">
+      <div class="panel-footer panel-footer--reply" v-if="canUpdate">
           <button class="btn btn-sm mr-1" @click="editing = true">Edit</button>
           <button class="btn btn-sm btn-danger mr-1" @click="destroy">Delete</button>
       </div>
@@ -42,6 +42,14 @@ export default {
       body: this.data.body,
       reply: this.data
     };
+  },
+  computed: {
+    loggedIn() {
+      return window.App.loggedIn;
+    },
+    canUpdate() {
+      return this.authorize(user => this.data.user_id == user.id);
+    }
   },
   methods: {
     update() {
