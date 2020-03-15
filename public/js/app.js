@@ -1971,6 +1971,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     remove: function remove(index) {
       this.items.splice(index, 1);
+      this.$emit('removed');
       flashMessage('Reply has been deleted!');
     }
   }
@@ -2070,8 +2071,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_RepliesComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/RepliesComponent */ "./resources/js/components/RepliesComponent.vue");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['initialRepliesCount'],
   components: {
     Replies: _components_RepliesComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      repliesCount: this.initialRepliesCount
+    };
   }
 });
 

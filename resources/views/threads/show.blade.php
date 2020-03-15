@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<thread-view inline-template>
+<thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
   <div class="container">
     <div class="row justify-content-center thread">
         <div class="col-md-8">
@@ -27,15 +27,12 @@
               </div>
             </div>
 
-            <replies :data="{{ $thread->replies }}"></replies>
+            <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+           
 
-            {{-- @foreach ($replies as $reply)
-              @include('threads.reply')
-            @endforeach --}}
-
-            <div class="pt-3">
+            {{-- <div class="pt-3">
               {{ $replies->links() }}
-            </div>
+            </div> --}}
               
             <div class="reply-store">
               @if( auth()->check() )
@@ -58,7 +55,7 @@
           <div class="card card-default">
             <div class="card-body">
               <p>This thread was published {{ $thread->created_at->diffForHumans() }} by
-                <a href="#">{{ $thread->owner->name }}</a>, and currently has {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}.
+                <a href="#">{{ $thread->owner->name }}</a>, and currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.
             </div>
           </div>
         </div>
