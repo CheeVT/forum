@@ -42,10 +42,38 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    function a_thread_belongs_to_a_board() {
+    public function a_thread_belongs_to_a_board() {
         $thread = create('App\Thread');
 
         $this->assertInstanceOf('App\Board', $thread->board);
+    }
+
+    /** @test */
+    public function a_thread_can_be_subscribed() {
+        $thread = create('App\Thread');
+
+        $this->authenticatedUser();
+
+        $thread->subscribe();
+
+        $this->assertEquals(
+            1,
+            $thread->subscriptions()->where('user_id', auth()->id())->count()
+        );
+    }
+
+    /** @test */
+    public function a_thread_can_be_unsubscribed() {
+        $thread = create('App\Thread');
+
+        $this->authenticatedUser();
+
+        $thread->subscribe();
+
+        $thread->unsubscribe();
+
+        $this->assertCount(0, $thread->subscriptions);
+
     }
 
 }
