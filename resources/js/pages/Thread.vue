@@ -1,8 +1,9 @@
 <script>
 import Replies from '../components/RepliesComponent';
+import Subscribe from '../components/SubscribeComponent';
 export default {
   props: ['initialRepliesCount'],
-  components: { Replies },
+  components: { Replies, Subscribe },
 
   data() {
     return {
