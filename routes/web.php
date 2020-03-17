@@ -27,6 +27,7 @@ Route::get('/threads/{board}', 'ThreadsController@index')->name('threads.board')
 Route::get('/threads/{board}/{thread}/replies', 'RepliesController@index')->name('replies.index');
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store')->middleware('auth');
 Route::delete('/threads/{board}/{thread}', 'ThreadsController@destroy')->name('threads.destroy');
+Route::post('/threads/{board}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('thread-subscriptions.store')->middleware('auth');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('favorites.store');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('favorites.destroy');
