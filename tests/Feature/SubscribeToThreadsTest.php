@@ -19,7 +19,7 @@ class SubscribeToThreadsTest extends TestCase
 
         $this->post($thread->show_url() . '/subscriptions');
 
-        $this->assertCount(1, $thread->subscriptions);
+        $this->assertCount(1, $thread->subscriptions);       
     }
 
     /** @test */
