@@ -2253,17 +2253,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['isSubscribedTo'],
+  data: function data() {
+    return {
+      isSubTo: this.isSubscribedTo
+    };
+  },
   computed: {
     classes: function classes() {
-      return ['btn', this.isSubscribedTo ? 'btn-primary' : 'btn-outline-primary'];
+      return ['btn', this.isSubTo ? 'btn-primary' : 'btn-outline-primary'];
     }
   },
   methods: {
     subscribe: function subscribe() {
       var _this = this;
 
-      axios.post("".concat(location.pathname, "/subscriptions")).then(function (response) {
-        _this.isSubscribedTo = !_this.isSubscribedTo;
+      var requestType = this.isSubTo ? 'delete' : 'post';
+      axios[requestType]("".concat(location.pathname, "/subscriptions")).then(function (response) {
+        _this.isSubTo = !_this.isSubTo;
+        _this.isSubTo ? flashMessage('Subscribed to thread!') : flashMessage('Unsubscribed from thread!');
       });
     }
   }

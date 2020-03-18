@@ -7,15 +7,22 @@
 <script>
 export default {
   props: ['isSubscribedTo'],
+  data() {
+    return {
+      isSubTo: this.isSubscribedTo
+    }
+  },
   computed: {
     classes() {
-      return ['btn', this.isSubscribedTo ? 'btn-primary' : 'btn-outline-primary']
+      return ['btn', this.isSubTo ? 'btn-primary' : 'btn-outline-primary']
     }
   },
   methods: {
     subscribe() {
-      axios.post(`${location.pathname}/subscriptions`).then(response => {
-        this.isSubscribedTo = ! this.isSubscribedTo
+      let requestType = this.isSubTo ? 'delete' : 'post';
+      axios[requestType](`${location.pathname}/subscriptions`).then(response => {
+        this.isSubTo = ! this.isSubTo
+        this.isSubTo ? flashMessage('Subscribed to thread!') : flashMessage('Unsubscribed from thread!')
       });
     }
   }

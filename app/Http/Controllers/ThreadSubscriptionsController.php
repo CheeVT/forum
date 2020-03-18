@@ -11,4 +11,8 @@ class ThreadSubscriptionsController extends Controller
     public function store(Board $board, Thread $thread) {
         $thread->subscribe();
     }
+
+    public function destroy(Board $board, Thread $thread) {
+        $thread->unsubscribe();
+    }
 }

@@ -42,7 +42,7 @@
                 <a href="#">{{ $thread->owner->name }}</a>, and currently has <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.
               </p>
               <p>
-                <subscribe :isSubscribedTo="{{ json_encode($thread->isSubscribedTo) }}"></subscribe>
+                <subscribe :is-subscribed-to="{{ json_encode($thread->isSubscribedTo) }}"></subscribe>
               </p>
             </div>
           </div>
