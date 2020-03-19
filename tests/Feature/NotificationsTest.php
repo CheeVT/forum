@@ -52,7 +52,7 @@ class NotificationsTest extends TestCase
         $user = auth()->user();
 
         $notification = $user->unreadNotifications->first();
-        $response = $this->getJson('/profiles/'. $user->name .'/notifications/' . $notification->id)->json();
+        $response = $this->getJson('/profiles/'. $user->name .'/notifications')->json();
 
         $this->assertCount(1, $response);
     }
