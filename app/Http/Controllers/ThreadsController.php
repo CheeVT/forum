@@ -77,6 +77,10 @@ class ThreadsController extends Controller
     {
         //return $thread;
         //return view('threads.show', compact('thread'));
+
+        if(auth()->check()) {
+            auth()->user()->read($thread);
+        }
         
         return view('threads.show', [
             'thread' => $thread,

@@ -11,7 +11,13 @@
                         <div class="card-header">
                                 <div class="article-header">
                                     <h4 class="article-header--title">
-                                        <a href="{{ $thread->show_url() }}">{{ $thread->title }}</a>
+                                        <a href="{{ $thread->show_url() }}">
+                                            @if(auth()->check() && $thread->hasUpdatesFor(auth()->user()))
+                                                <strong>{{ $thread->title }}</strong>
+                                            @else
+                                                {{ $thread->title }}
+                                            @endif
+                                        </a>
                                     </h4>
 
                                     <a href="{{ $thread->show_url() }}">

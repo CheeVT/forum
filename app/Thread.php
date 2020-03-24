@@ -93,4 +93,10 @@ class Thread extends Model
     public function scopeFilter($query, ThreadFilters $filters) {
         return $filters->apply($query);
     }
+
+    public function hasUpdatesFor($user) {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
+    }
 }
