@@ -89,4 +89,21 @@ class ParticipateInForumTest extends TestCase
 
         $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedBody]);
     }
+
+    /** @test */
+    public function replies_that_contain_spam_may_not_be_created() {
+        $this->withoutExceptionHandling();
+
+        $this->authenticatedUser();
+
+        $thread = create('App\Thread');
+
+        $reply = create('App\Reply', [
+            'body' => 'vucicu pederu'
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+    }
 }
