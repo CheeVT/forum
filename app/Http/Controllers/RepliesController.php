@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Spam;
 use App\Board;
 use App\Reply;
 use App\Thread;
+use App\Inspections\Spam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
