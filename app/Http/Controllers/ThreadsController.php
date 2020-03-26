@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Board;
 use App\Thread;
+use App\Inspections\Spam;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
 use Illuminate\Support\Facades\Auth;
@@ -48,13 +49,15 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Spam $spam)
     {
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
             'board_id' => 'required|exists:boards,id'
         ]);
+
+        $spam->detect(request('body'));
 
         $thread = Thread::create([
             'title' => $request->title,
