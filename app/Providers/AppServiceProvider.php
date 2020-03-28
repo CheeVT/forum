@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             });
             $view->with('boards', $boards);
         });
+        \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
         Schema::defaultStringLength(191);
     }
 }
