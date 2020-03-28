@@ -43,6 +43,8 @@ export default {
         this.body = '';
         flashMessage('Reply has been created!');
         this.$emit('created', response.data)
+      }).catch(error => {
+        flashMessage(error.response.data, 'danger');
       });
     }
   }

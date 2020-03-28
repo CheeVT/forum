@@ -43,8 +43,8 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.App.csrfToken;
 
 window.events = new Vue();
 
-window.flashMessage = function (message) {
-    window.events.$emit('flashMessage', message)
+window.flashMessage = function (message, type = 'success') {
+    window.events.$emit('flashMessage', {message, type})
 }
 
 Vue.prototype.authorize = function (handler) {

@@ -1903,11 +1903,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['message'],
   data: function data() {
     return {
       body: '',
+      type: 'success',
       show: false
     };
   },
@@ -1918,13 +1923,15 @@ __webpack_require__.r(__webpack_exports__);
       this.flash(this.message);
     }
 
-    window.events.$on('flashMessage', function (message) {
-      return _this.flash(message);
+    window.events.$on('flashMessage', function (data) {
+      return _this.flash(data);
     });
   },
   methods: {
-    flash: function flash(message) {
-      this.body = message, this.show = true;
+    flash: function flash(data) {
+      this.body = data.message;
+      this.type = data.type;
+      this.show = true;
       this.hide();
     },
     hide: function hide() {
@@ -1997,6 +2004,8 @@ __webpack_require__.r(__webpack_exports__);
         flashMessage('Reply has been created!');
 
         _this.$emit('created', response.data);
+      })["catch"](function (error) {
+        flashMessage(error.response.data, 'danger');
       });
     }
   }
@@ -2212,17 +2221,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     update: function update() {
-      axios.patch("/replies/".concat(this.data.id), {
-        body: this.body
-      });
-      this.editing = false;
-      flashMessage('Reply has been updated!');
-    },
-    destroy: function destroy() {
       var _this2 = this;
 
+      axios.patch("/replies/".concat(this.data.id), {
+        body: this.body
+      }).then(function (response) {
+        _this2.editing = false;
+        flashMessage('Reply has been updated!');
+      })["catch"](function (error) {
+        flashMessage(error.response.data, 'danger');
+      });
+    },
+    destroy: function destroy() {
+      var _this3 = this;
+
       axios["delete"]("/replies/".concat(this.data.id)).then(function (response) {
-        _this2.$emit('deleted', _this2.data.id);
+        _this3.$emit('deleted', _this3.data.id);
         /*if(response.status == 200) {
           $(this.$el).fadeOut(300, function() {
             flashMessage('Reply has been deleted!');
@@ -56027,17 +56041,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [
-        { name: "show", rawName: "v-show", value: _vm.show, expression: "show" }
-      ],
-      staticClass: "alert alert-success alert--fixed",
-      attrs: { role: "alert" }
-    },
-    [_c("strong", [_vm._v("Success!")]), _vm._v(" " + _vm._s(_vm.body) + "\n")]
-  )
+  return _c("div", {
+    directives: [
+      { name: "show", rawName: "v-show", value: _vm.show, expression: "show" }
+    ],
+    staticClass: "alert alert--fixed",
+    class: "alert-" + _vm.type,
+    attrs: { role: "alert" },
+    domProps: { textContent: _vm._s(_vm.body) }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -68754,7 +68766,11 @@ window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.App.csrfToken;
 window.events = new Vue();
 
 window.flashMessage = function (message) {
-  window.events.$emit('flashMessage', message);
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+  window.events.$emit('flashMessage', {
+    message: message,
+    type: type
+  });
 };
 
 Vue.prototype.authorize = function (handler) {

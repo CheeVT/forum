@@ -59,11 +59,15 @@ export default {
     update() {
       axios.patch(`/replies/${this.data.id}`, {
         body: this.body
-      });
+      }).then(response => {
+        this.editing = false;
 
-      this.editing = false;
+        flashMessage('Reply has been updated!');
+      }).catch(error => {
+        flashMessage(error.response.data, 'danger');
+      })
 
-      flashMessage('Reply has been updated!');
+      
     },
     destroy() {
       axios.delete(`/replies/${this.data.id}`).then(response => {

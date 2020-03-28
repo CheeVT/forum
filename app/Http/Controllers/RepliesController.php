@@ -45,12 +45,17 @@ class RepliesController extends Controller
      */
     public function store(Thread $thread, Request $request, Spam $spam)
     {
-        $this->validateReply();
+        try{
+            $this->validateReply();
 
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => Auth::user()->id
-        ]);
+            $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => Auth::user()->id
+            ]);
+        } catch(\Exception $e) {
+            return response('Sorry, your reply could not be saved!', 422);
+        }
+        
 
         if(request()->expectsJson()) {
             return $reply->load('user');
@@ -93,9 +98,15 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
 
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply->update(['body' => request('body')]);
+            $reply->update(['body' => request('body')]);
+        } catch(\Exception $e) {
+            return response('Sorry, your reply could not be saved!', 422);
+        }
+
+        
     }
 
     /**
