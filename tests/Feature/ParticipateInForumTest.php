@@ -102,8 +102,23 @@ class ParticipateInForumTest extends TestCase
             'body' => 'vucicu pederu'
         ]);
 
-        $this->expectException(\Exception::class);
+        //$this->expectException(\Exception::class);
 
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
+
+    /** @test */
+    public function users_may_only_reply_a_maximum_once_per_minute() {
+        $this->authenticatedUser();
+
+        $thread = create('App\Thread');
+        $reply = make('App\Reply');
+
+        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+            ->assertStatus(200);
+
+        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

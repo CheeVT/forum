@@ -7,6 +7,7 @@ use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -44,6 +45,9 @@ class RepliesController extends Controller
      */
     public function store(Thread $thread, Request $request)
     {
+        if(Gate::denies('create', new Reply)) {
+            return response('You are posting too frequently. Take a break!', 429);
+        }
         try{
             request()->validate(['body' => 'required|spamfree']);
 
@@ -61,7 +65,8 @@ class RepliesController extends Controller
         }
 
         //return back();
-        return redirect($thread->show_url());
+        //return redirect($thread->show_url());
+        return response($reply->load('user'), 200);
     }
 
     /**
