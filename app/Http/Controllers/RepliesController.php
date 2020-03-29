@@ -6,6 +6,7 @@ use App\Board;
 use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
+use App\Http\Requests\ReplyRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -43,9 +44,14 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Thread $thread, Request $request)
+    public function store(Thread $thread, ReplyRequest $request)
     {
-        if(Gate::denies('create', new Reply)) {
+        return response(
+            $thread->addReply([
+            'body' => request('body'),
+            'user_id' => Auth::user()->id
+        ])->load('user'), 200);
+        /*if(Gate::denies('create', new Reply)) {
             return response('You are posting too frequently. Take a break!', 429);
         }
         try{
@@ -66,7 +72,7 @@ class RepliesController extends Controller
 
         //return back();
         //return redirect($thread->show_url());
-        return response($reply->load('user'), 200);
+        return response($reply->load('user'), 200);*/
     }
 
     /**

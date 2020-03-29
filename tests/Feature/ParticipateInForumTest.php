@@ -92,7 +92,8 @@ class ParticipateInForumTest extends TestCase
 
     /** @test */
     public function replies_that_contain_spam_may_not_be_created() {
-        $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->authenticatedUser();
 
@@ -104,7 +105,7 @@ class ParticipateInForumTest extends TestCase
 
         //$this->expectException(\Exception::class);
 
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+        $response = $this->json('post', '/threads/' . $thread->id . '/replies', $reply->toArray())
             ->assertStatus(422);
     }
 
