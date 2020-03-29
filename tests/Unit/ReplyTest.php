@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Reply;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -40,5 +41,17 @@ class ReplyTest extends TestCase
         ]);
 
         $this->assertEquals(['CheeVT', 'missmudrica'], $reply->mentionedUsers());
+    }
+
+    /** @test */
+    public function it_wraps_mentioned_names_in_the_body_within_anchor_tag() {
+        $reply = new Reply([
+            'body' => 'Hello @CheeVT.'
+        ]);
+
+        $this->assertEquals(
+            'Hello <a href="/profiles/CheeVT">@CheeVT</a>.',
+            $reply->body
+        );
     }
 }
