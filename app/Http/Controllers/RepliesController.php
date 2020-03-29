@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Board;
 use App\Reply;
 use App\Thread;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ReplyRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Notifications\NotifiedInReply;
 
 class RepliesController extends Controller
 {
@@ -42,15 +44,28 @@ class RepliesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsegit 
      */
     public function store(Thread $thread, ReplyRequest $request)
     {
-        return response(
-            $thread->addReply([
+        $reply = $thread->addReply([
             'body' => request('body'),
             'user_id' => Auth::user()->id
-        ])->load('user'), 200);
+        ]);
+
+        preg_match_all('/\@([^\s\.\,]+)/', $reply->body, $matches);
+
+        $names = $matches[1];        
+
+        foreach($names as $name) {
+            $user = User::whereName($name)->first();
+
+            if($user) {
+                $user->notify(new NotifiedInReply($reply));
+            }
+        }
+
+        return response($reply->load('user'), 200);
         /*if(Gate::denies('create', new Reply)) {
             return response('You are posting too frequently. Take a break!', 429);
         }
