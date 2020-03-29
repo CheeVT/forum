@@ -48,24 +48,12 @@ class RepliesController extends Controller
      */
     public function store(Thread $thread, ReplyRequest $request)
     {
-        $reply = $thread->addReply([
+        return response($thread->addReply([
             'body' => request('body'),
             'user_id' => Auth::user()->id
-        ]);
+        ]), 200);
 
-        preg_match_all('/\@([^\s\.\,]+)/', $reply->body, $matches);
 
-        $names = $matches[1];        
-
-        foreach($names as $name) {
-            $user = User::whereName($name)->first();
-
-            if($user) {
-                $user->notify(new NotifiedInReply($reply));
-            }
-        }
-
-        return response($reply->load('user'), 200);
         /*if(Gate::denies('create', new Reply)) {
             return response('You are posting too frequently. Take a break!', 429);
         }
