@@ -30,7 +30,8 @@
     <style>
         .article-header {
             display: flex;
-            align-items: center;
+            align-items: center;            
+            justify-content: space-between;
         }
         .article-header--title {
             flex: 1;

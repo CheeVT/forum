@@ -138,6 +138,6 @@ class ThreadsController extends Controller
             $threads->where('board_id', $board->id);
         }
 
-        return $threads->get();
+        return $threads->paginate(5);
     }
 }
