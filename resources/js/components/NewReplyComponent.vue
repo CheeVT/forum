@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import Tribute from "tributejs";
 export default {
   props: ['endpoint'],
   data() {
@@ -37,6 +38,46 @@ export default {
       return window.App.loggedIn;
     }
   },
+  mounted() {
+    let tribute = new Tribute({
+      values: function (text, cb) {
+        remoteSearch(text, function(users) {
+          cb(users)
+        })
+      },
+      lookup: 'name',
+      fillAttr: 'name'
+    });
+
+    tribute.attach(document.getElementById("body"));
+
+    function remoteSearch(text, cb) {
+        var URL = "data.php";
+        console.log('TEXT', text)
+        axios.get('/api/users?query=' + text).then(response => {
+         console.log('response', response)
+         if (response.status === 200) {
+            var data = response.data;
+            console.log('DATA', data)
+            cb(data);
+          } 
+        })
+        //xhr = new XMLHttpRequest();
+        /*xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              var data = JSON.parse(xhr.responseText);
+              console.log('DATA', data)
+              cb(data);
+            } else if (xhr.status === 403) {
+              cb([]);
+            }
+          }
+        };*/
+        //xhr.open("GET", URL + "?q=" + text, true);
+        //xhr.send();        
+      }
+  },
   methods: {
     addReply() {
       axios.post(this.endpoint, {body: this.body}).then(response => {
@@ -46,7 +87,8 @@ export default {
       }).catch(error => {
         flashMessage(error.response.data, 'danger');
       });
-    }
+    },
+    
   }
 }
 </script>
