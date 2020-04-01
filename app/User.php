@@ -61,6 +61,13 @@ class User extends Authenticatable
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
     }
 
+    public function avatar() {
+        if(!  $this->avatar_path) {
+            return 'storage/avatars/default.jpg';
+        }
+        return 'storage/' . $this->avatar_path;
+    }
+
     public function lastReply() {
         return $this->hasOne(Reply::class)->latest();
     }

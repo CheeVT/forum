@@ -7,6 +7,17 @@
         {{ $user->name }}
         <small>Since {{ $user->created_at->diffForHumans() }}</small>
       </h1>
+
+      @can('update', $user)
+        <form action="{{ route('api.users-avatar.store', $user) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          <input type="file" name="avatar" id="">
+
+          <button type="submit" class="btn btn-primary">Upload avatar</button>
+        </form>
+      @endcan
+
+      <img src="/{{ $user->avatar() }}" width="100" height="100" />
     </div>
 
     @forelse($activities as $date => $records)

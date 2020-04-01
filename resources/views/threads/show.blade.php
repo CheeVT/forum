@@ -7,6 +7,7 @@
         <div class="col-md-8">
             <div class="card">
               <div class="article-header">
+                <img src="/{{ $thread->owner->avatar() }}" width="40" height="40" style="margin: 10px;" />
                 <div class="card-header article-header--title">
                   <h2>{{ $thread->title }}</h2>
                   <span class="thread__author">Created by: <a href="{{ route('profiles.show', $thread->owner) }}"><span>{{ $thread->owner->name }}</span></a></span>
