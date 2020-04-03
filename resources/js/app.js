@@ -25,6 +25,7 @@ Vue.component('user-notifications', require('./components/UserNotificationsCompo
 // Vue.component('reply-component', require('./components/ReplyComponent.vue').default);
 Vue.component('favorite', require('./components/FavoriteComponent.vue').default);
 Vue.component('thread-view', require('./pages/Thread.vue').default);
+Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

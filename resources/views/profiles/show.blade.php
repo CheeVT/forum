@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="page-header">
-      <h1>
+      {{--  <h1>
         {{ $user->name }}
         <small>Since {{ $user->created_at->diffForHumans() }}</small>
       </h1>
@@ -15,9 +15,11 @@
 
           <button type="submit" class="btn btn-primary">Upload avatar</button>
         </form>
-      @endcan
+        @endcan  
+        <img src="/{{ $user->avatar() }}" width="100" height="100" /> --}}
 
-      <img src="/{{ $user->avatar() }}" width="100" height="100" />
+      <avatar-form :user="{{ $user }}"></avatar-form>
+
     </div>
 
     @forelse($activities as $date => $records)
