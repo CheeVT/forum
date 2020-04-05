@@ -25,7 +25,7 @@
                                 </a>
                             </li>
                         @empty
-                            <li>There is not any in trending yet!</li>
+                            <li class="list-group-item">There is not any in trending yet!</li>
                         @endforelse
                     </ul>
                 </div>
