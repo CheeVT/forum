@@ -11,9 +11,14 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+use Illuminate\Support\Facades\Redis;
+
+Route::get('/', function () {
+    /*$visit = Redis::incr('visits');
+
+    echo $visit;*/
+    return redirect('/login');
+});
 
 Auth::routes();
 
