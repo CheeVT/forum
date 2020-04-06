@@ -30,7 +30,8 @@ class CreateThreadsTest extends TestCase
 
     /** @test */
     public function authenticated_users_must_confirm_their_email_address_before_creating_threads() {
-        $user = create('App\User', ['email_verified_at' => null]);
+        //$user = create('App\User', ['email_verified_at' => null]);
+        $user = factory('App\User')->states('unverified')->create();
         //dd($user);
         
         $this->publishThread(['user_id' => $user->id], $user)
