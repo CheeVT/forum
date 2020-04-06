@@ -29,6 +29,17 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
+    public function authenticated_users_must_confirm_their_email_address_before_creating_threads() {
+        $user = create('App\User', ['email_verified_at' => null]);
+        //dd($user);
+        
+        $this->publishThread(['user_id' => $user->id], $user)
+            ->assertRedirect('/threads')
+            ->assertSessionHas('flash', 'You must confirm your email address!');
+
+    }
+
+    /** @test */
     function an_authenticated_user_can_create_new_threads() {
         $this->authenticatedUser();
 
@@ -64,9 +75,9 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('board_id');
     }
 
-    protected function publishThread($overrides = []) {
-        $this->authenticatedUser();
-
+    protected function publishThread($overrides = [], $authenticatedUserOverrides = []) {
+        $this->authenticatedUser($authenticatedUserOverrides);
+        
         $thread = make('App\Thread', $overrides);
 
         return $this->post('/threads', $thread->toArray());

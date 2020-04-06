@@ -13,22 +13,24 @@
         props: ['message'],
         data() {
             return {
-                body: '',
+                body: this.message,
                 type: 'success',
                 show: false
             }
         },
         created() {
             if(this.message) {
-                this.flash(this.message)
+                this.flash()
             }
 
             window.events.$on('flashMessage', data => this.flash(data))
         },
         methods: {
             flash(data) {
-                this.body = data.message
-                this.type = data.type
+                if(data) {
+                    this.body = data.message
+                    this.type = data.type
+                }
                 this.show = true
 
                 this.hide()

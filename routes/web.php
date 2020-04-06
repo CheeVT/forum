@@ -27,7 +27,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/threads', 'ThreadsController@index')->name('threads.index');
 Route::get('/threads/create', 'ThreadsController@create')->name('threads.create');
 Route::get('/threads/{board}/{thread}', 'ThreadsController@show')->name('threads.show');
-Route::post('/threads', 'ThreadsController@store')->name('threads.store');
+Route::post('/threads', 'ThreadsController@store')->name('threads.store')->middleware('must-be-verified');
 Route::get('/threads/{board}', 'ThreadsController@index')->name('threads.board');
 Route::get('/threads/{board}/{thread}/replies', 'RepliesController@index')->name('replies.index');
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store')->middleware('auth');

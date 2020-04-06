@@ -1972,7 +1972,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['message'],
   data: function data() {
     return {
-      body: '',
+      body: this.message,
       type: 'success',
       show: false
     };
@@ -1981,7 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     if (this.message) {
-      this.flash(this.message);
+      this.flash();
     }
 
     window.events.$on('flashMessage', function (data) {
@@ -1990,8 +1990,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     flash: function flash(data) {
-      this.body = data.message;
-      this.type = data.type;
+      if (data) {
+        this.body = data.message;
+        this.type = data.type;
+      }
+
       this.show = true;
       this.hide();
     },
