@@ -25,7 +25,7 @@ class MentionUsersTest extends TestCase
             'body' => 'Hey @missmudrica, look at that nice sneaker from @nike factory :-)'
         ]);
 
-        $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        $this->post('/threads/' . $thread->board->slug . '/' . $thread->slug . '/replies', $reply->toArray());
 
         $this->assertCount(1, $missmudrica->notifications);
     }

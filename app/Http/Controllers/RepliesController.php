@@ -46,7 +46,7 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Responsegit 
      */
-    public function store(Thread $thread, ReplyRequest $request)
+    public function store(Board $board, Thread $thread, ReplyRequest $request)
     {
         return response($thread->addReply([
             'body' => request('body'),

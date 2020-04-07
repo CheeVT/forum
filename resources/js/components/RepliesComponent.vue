@@ -16,14 +16,14 @@ import Reply from './ReplyComponent';
 import NewReply from './NewReplyComponent';
 import collection from '../mixins/collection';
 export default {
-  props: ['threadId'],
+  props: ['repliesstore'],
   components: { Reply, NewReply, Paginator },
   mixins: [collection],
   data() {
     return {
       dataSet: false,
       items: [],
-      endpoint: `/threads/${this.threadId}/replies`
+      endpoint: this.repliesstore
     }
   },
   created() {

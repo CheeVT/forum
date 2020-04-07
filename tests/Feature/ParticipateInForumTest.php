@@ -18,7 +18,9 @@ class ParticipateInForumTest extends TestCase
         $this->expectException('Illuminate\Auth\AuthenticationException');
         $this->withoutExceptionHandling();
 
-        $this->post('/threads/1/replies', [])
+        $thread = create('App\Thread');
+
+        $this->post("/threads/{$thread->board->slug}/{$thread->slug}/replies", [])
             ->assertRedirect('/login');
     }
 
@@ -32,7 +34,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = factory('App\Reply')->make();
 
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        $response = $this->post("/threads/{$thread->board->slug}/{$thread->slug}/replies", $reply->toArray());
 
         //$response->assertRedirect('/threads/' . $thread);
         //$response->assertRedirect($thread->show_url());
@@ -105,7 +107,7 @@ class ParticipateInForumTest extends TestCase
 
         //$this->expectException(\Exception::class);
 
-        $response = $this->json('post', '/threads/' . $thread->id . '/replies', $reply->toArray())
+        $response = $this->json('post', "/threads/{$thread->board->slug}/{$thread->slug}/replies", $reply->toArray())
             ->assertStatus(422);
     }
 
@@ -116,10 +118,10 @@ class ParticipateInForumTest extends TestCase
         $thread = create('App\Thread');
         $reply = make('App\Reply');
 
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+        $response = $this->post("/threads/{$thread->board->slug}/{$thread->slug}/replies", $reply->toArray())
             ->assertStatus(200);
 
-        $response = $this->post('/threads/' . $thread->id . '/replies', $reply->toArray())
+        $response = $this->post("/threads/{$thread->board->slug}/{$thread->slug}/replies", $reply->toArray())
             ->assertStatus(429);
     }
 }

@@ -28,7 +28,7 @@
               </div>
             </div>
 
-            <replies :thread-id="{{ $thread->id }}" @removed="repliesCount--" @added="repliesCount++"></replies>
+            <replies repliesStore="/threads/{{$thread->board->slug}}/{{$thread->slug}}/replies" @removed="repliesCount--" @added="repliesCount++"></replies>
            
 
             {{-- <div class="pt-3">

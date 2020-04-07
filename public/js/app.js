@@ -2145,6 +2145,7 @@ __webpack_require__.r(__webpack_exports__);
         body: this.body
       }).then(function (response) {
         _this.body = '';
+        console.log('RESP DATA', response.data);
         flashMessage('Reply has been created!');
 
         _this.$emit('created', response.data);
@@ -2252,7 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['threadId'],
+  props: ['repliesstore'],
   components: {
     Reply: _ReplyComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     NewReply: _NewReplyComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -2263,7 +2264,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       dataSet: false,
       items: [],
-      endpoint: "/threads/".concat(this.threadId, "/replies")
+      endpoint: this.repliesstore
     };
   },
   created: function created() {
@@ -56551,11 +56552,6 @@ var render = function() {
     [
       _c("div", { staticClass: "card-header article-header" }, [
         _c("div", { staticClass: "article-header--title" }, [
-          _c("a", {
-            attrs: { href: "/profiles/" + _vm.reply.user.name },
-            domProps: { textContent: _vm._s(_vm.reply.user.name) }
-          }),
-          _vm._v(" - \n      "),
           _c("span", { domProps: { textContent: _vm._s(_vm.createdAt) } })
         ]),
         _vm._v(" "),
@@ -69752,7 +69748,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add(items) {
+      console.log('ITEMMM', items);
       this.items.push(items);
+      console.log('ADDD', this.items);
       this.$emit('added');
     },
     remove: function remove(index) {

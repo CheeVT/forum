@@ -6,8 +6,9 @@ export default {
   },
   methods: {
     add(items) {
+      console.log('ITEMMM', items)
       this.items.push(items);
-
+      console.log('ADDD', this.items)
       this.$emit('added');
     },
     remove(index) {

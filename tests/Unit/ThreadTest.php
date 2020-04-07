@@ -19,6 +19,14 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
+    public function a_thread_has_a_path() {
+        $thread = create('App\Thread');
+
+        $baseUrl = config('app.url');
+        $this->assertEquals("$baseUrl/threads/{$thread->board->slug}/{$thread->slug}", $thread->show_url());
+    }
+
+    /** @test */
     public function a_thread_has_replies()
     {
         $this->assertInstanceOf(

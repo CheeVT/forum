@@ -33,6 +33,8 @@ class Thread extends Model
     public function addReply($reply) {
         $reply = $this->replies()->create($reply);
 
+        //dd($reply->with('user')->get());
+
         event(new ThreadHasNewReply($this, $reply));
 
         //$this->subscriptions
@@ -46,8 +48,8 @@ class Thread extends Model
             });*/
 
 
-
-        return $reply;
+        return $reply->with('user')->get();
+        //return $reply;
     }
 
     public function replies() {
@@ -99,4 +101,30 @@ class Thread extends Model
 
         return $this->updated_at > cache($key);
     }
+
+    public function getRouteKeyName() {
+        return 'slug';
+    }
+
+    public function setSlugAttribute($value) {
+        if(static::whereSlug($slug = str_slug($value))->exists()) {
+            $slug = $this->incrementSlug($value);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    protected function incrementSlug($title) {
+        $max = static::whereTitle($title)->latest('id')->value('slug');
+        //dd($max);
+        if(is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+        $slug = str_slug($title);
+        return "{$slug}-2";
+    }
+
+
 }

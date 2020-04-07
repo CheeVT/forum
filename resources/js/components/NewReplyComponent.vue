@@ -82,6 +82,7 @@ export default {
     addReply() {
       axios.post(this.endpoint, {body: this.body}).then(response => {
         this.body = '';
+        console.log('RESP DATA', response.data)
         flashMessage('Reply has been created!');
         this.$emit('created', response.data)
       }).catch(error => {

@@ -19,8 +19,11 @@ $factory->define(Board::class, function (Faker $faker) {
 });
 
 $factory->define('App\Thread', function (Faker $faker) {
+    $title = $faker->sentence;
+    
     return [
-        'title' => $faker->sentence,
+        'slug' => str_slug($title),
+        'title' => $title,
         'body' => $faker->paragraph,
         'user_id' => function() {
             return factory('App\User')->create()->id;

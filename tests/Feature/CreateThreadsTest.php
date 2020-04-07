@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -63,6 +64,23 @@ class CreateThreadsTest extends TestCase
     function a_thread_requires_a_body() {
         $this->publishThread(['body' => null])
             ->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_unique_slug() {
+        $this->authenticatedUser();
+
+        $thread = create('App\Thread', ['title' => 'Chee VT', 'slug' => 'chee-vt']);
+
+        $this->assertEquals($thread->slug, 'chee-vt');
+
+        $this->post(route('threads.store'), $thread->toArray());
+
+        $this->assertTrue(Thread::whereSlug('chee-vt-2')->exists());
+
+        $this->post(route('threads.store'), $thread->toArray());
+
+        $this->assertTrue(Thread::whereSlug('chee-vt-3')->exists());
     }
 
     /** @test */
