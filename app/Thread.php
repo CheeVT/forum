@@ -52,8 +52,8 @@ class Thread extends Model
             });*/
 
 
-        return $reply->with('user')->get();
-        //return $reply;
+        //return $reply->with('user')->get();
+        return $reply;
     }
 
     public function replies() {

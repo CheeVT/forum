@@ -51,7 +51,7 @@ class RepliesController extends Controller
         return response($thread->addReply([
             'body' => request('body'),
             'user_id' => Auth::user()->id
-        ]), 200);
+        ])->load('user'), 200);
 
 
         /*if(Gate::denies('create', new Reply)) {

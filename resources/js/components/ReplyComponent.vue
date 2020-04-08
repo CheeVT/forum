@@ -2,7 +2,7 @@
   <div :id="`reply-${reply.id}`" class="card">
     <div class="card-header article-header">
       <div class="article-header--title">
-       
+        <a :href="`/profiles/${reply.user.name}`" v-text="reply.user.name"></a> - 
         <span v-text="createdAt"></span>
       </div>
 

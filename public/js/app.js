@@ -56552,6 +56552,11 @@ var render = function() {
     [
       _c("div", { staticClass: "card-header article-header" }, [
         _c("div", { staticClass: "article-header--title" }, [
+          _c("a", {
+            attrs: { href: "/profiles/" + _vm.reply.user.name },
+            domProps: { textContent: _vm._s(_vm.reply.user.name) }
+          }),
+          _vm._v(" - \n      "),
           _c("span", { domProps: { textContent: _vm._s(_vm.createdAt) } })
         ]),
         _vm._v(" "),
