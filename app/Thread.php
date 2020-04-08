@@ -27,7 +27,11 @@ class Thread extends Model
 
         static::deleting(function($thread) {
             $thread->replies->each->delete();
-        });        
+        });
+
+        static::created(function($thread) {
+            $thread->update(['slug' => $thread->title]);
+        });
     }    
 
     public function addReply($reply) {
@@ -108,13 +112,14 @@ class Thread extends Model
 
     public function setSlugAttribute($value) {
         if(static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = $this->incrementSlug($value);
+            //$slug = $this->incrementSlug($value);
+            $slug = "{$slug}-{$this->id}";
         }
 
         $this->attributes['slug'] = $slug;
     }
 
-    protected function incrementSlug($title) {
+    /*protected function incrementSlug($title) {
         $max = static::whereTitle($title)->latest('id')->value('slug');
         //dd($max);
         if(is_numeric($max[-1])) {
@@ -124,7 +129,7 @@ class Thread extends Model
         }
         $slug = str_slug($title);
         return "{$slug}-2";
-    }
+    }*/
 
 
 }
