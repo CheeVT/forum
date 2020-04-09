@@ -47,12 +47,24 @@ window.flashMessage = function (message, type = 'success') {
     window.events.$emit('flashMessage', {message, type})
 }
 
-Vue.prototype.authorize = function (handler) {
-    let user = window.App.user;
 
-    return user ? handler(user) : false;
+let authorizations = require('./authorizations');
+
+Vue.prototype.authorize = function (...params) {
+    if (!window.App.loggedIn) return false;
+
+    if(typeof params[0] === 'string') {
+        return authorizations[params[0]](params[1]);
+    }
+
+    return params[0](window.App.user);
+    /*let user = window.App.user;
+
+    return user ? handler(user) : false;*/
 
     /*if( !user ) return false;
 
     return handler(user);  */
 };
+
+Vue.prototype.loggedIn = window.App.loggedIn;

@@ -1,12 +1,12 @@
 <template>
-  <div :id="`reply-${reply.id}`" class="card">
+  <div :id="`reply-${reply.id}`" class="card" :class="isBest ? 'text-white bg-info' : ''">
     <div class="card-header article-header">
       <div class="article-header--title">
         <a :href="`/profiles/${reply.user.name}`" v-text="reply.user.name"></a> - 
         <span v-text="createdAt"></span>
       </div>
 
-       <div v-if="loggedIn">
+      <div v-if="loggedIn">
         <favorite :reply="reply"></favorite>
       </div>
 
@@ -24,9 +24,14 @@
       <div v-else v-html="body"></div>
     </div>
     <!-- @can ('delete', $reply) -->
-      <div class="panel-footer panel-footer--reply" v-if="canUpdate">
+      <div class="panel-footer panel-footer--reply">
+        <button class="btn btn-sm btn-primary ml-1 mr-a" @click="markBestReply" v-show="! isBest">Best Reply?</button>
+
+        <div v-if="authorize('updateReply', reply)">
           <button class="btn btn-sm mr-1" @click="editing = true">Edit</button>
           <button class="btn btn-sm btn-danger mr-1" @click="destroy">Delete</button>
+        </div>
+          
       </div>
     <!-- @endcan -->
   </div>
@@ -43,19 +48,25 @@ export default {
     return {
       editing: false,
       body: this.data.body,
+      isBest: this.data.isBest,
       reply: this.data
     };
   },
   computed: {
-    loggedIn() {
+    /*loggedIn() {
       return window.App.loggedIn;
     },
     canUpdate() {
       return this.authorize(user => this.data.user_id == user.id);
-    },
+    },*/
     createdAt() {
       return moment(this.data.created_at).fromNow();
     }
+  },
+  created() {
+    window.events.$on('best-reply-selected', id => {
+      this.isBest = (id === this.reply.id);
+    });
   },
   methods: {
     update() {
@@ -80,6 +91,11 @@ export default {
           })
         }*/
       })
+    },
+    markBestReply() {
+      axios.post(`/replies/${this.data.id}/best`);
+
+      window.events.$emit('best-reply-selected', this.data.id);
     }
   }
 }
