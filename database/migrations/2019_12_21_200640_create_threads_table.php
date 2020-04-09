@@ -23,6 +23,8 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('board_id')->index();
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
             $table->unsignedBigInteger('replies_count')->default(0);
+            $table->unsignedBigInteger('best_reply_id')->nullable();
+            //$table->foreign('best_reply_id')->references('id')->on('replies')->onDelete('set null');
             $table->timestamps();
         });
     }
