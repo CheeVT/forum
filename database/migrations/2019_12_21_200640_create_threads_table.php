@@ -25,6 +25,7 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('replies_count')->default(0);
             $table->unsignedBigInteger('best_reply_id')->nullable();
             //$table->foreign('best_reply_id')->references('id')->on('replies')->onDelete('set null');
+            $table->boolean('locked')->default(false);
             $table->timestamps();
         });
     }

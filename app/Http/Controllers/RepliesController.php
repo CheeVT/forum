@@ -48,6 +48,10 @@ class RepliesController extends Controller
      */
     public function store(Board $board, Thread $thread, ReplyRequest $request)
     {
+        if($thread->locked) {
+            return response('Thread is locked', 422);
+        }
+
         return response($thread->addReply([
             'body' => request('body'),
             'user_id' => Auth::user()->id

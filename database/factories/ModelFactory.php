@@ -30,7 +30,8 @@ $factory->define('App\Thread', function (Faker $faker) {
         },
         'board_id' => function() {
             return factory('App\Board')->create()->id;
-        }
+        },
+        'locked' => false
     ];
 });
 
