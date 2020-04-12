@@ -24,10 +24,10 @@
       <div v-else v-html="body"></div>
     </div>
     <!-- @can ('delete', $reply) -->
-      <div class="panel-footer panel-footer--reply">
-        <button class="btn btn-sm btn-primary ml-1 mr-a" @click="markBestReply" v-show="! isBest">Best Reply?</button>
+      <div class="panel-footer panel-footer--reply" v-if="authorize('owns', reply) || authorize('owns', reply.thread)">
+        <button class="btn btn-sm btn-primary ml-1 mr-a" @click="markBestReply" v-show="authorize('owns', reply.thread) && ! isBest">Best Reply?</button>
 
-        <div v-if="authorize('updateReply', reply)">
+        <div v-if="authorize('owns', reply)">
           <button class="btn btn-sm mr-1" @click="editing = true">Edit</button>
           <button class="btn btn-sm btn-danger mr-1" @click="destroy">Delete</button>
         </div>
@@ -42,14 +42,14 @@ import FavoriteComponent from './FavoriteComponent';
 import moment from 'moment';
 
 export default {
-  props: ['data'],
+  props: ['dataReply'],
   components: { FavoriteComponent },
   data() {
     return {
       editing: false,
-      body: this.data.body,
-      isBest: this.data.isBest,
-      reply: this.data
+      body: this.dataReply.body,
+      isBest: this.dataReply.isBest,
+      reply: this.dataReply
     };
   },
   computed: {
@@ -60,7 +60,7 @@ export default {
       return this.authorize(user => this.data.user_id == user.id);
     },*/
     createdAt() {
-      return moment(this.data.created_at).fromNow();
+      return moment(this.dataReply.created_at).fromNow();
     }
   },
   created() {
@@ -70,21 +70,21 @@ export default {
   },
   methods: {
     update() {
-      axios.patch(`/replies/${this.data.id}`, {
+      axios.patch(`/replies/${this.dataReply.id}`, {
         body: this.body
       }).then(response => {
         this.editing = false;
 
         flashMessage('Reply has been updated!');
       }).catch(error => {
-        flashMessage(error.response.data, 'danger');
+        flashMessage(error.response.dataReply, 'danger');
       })
 
       
     },
     destroy() {
-      axios.delete(`/replies/${this.data.id}`).then(response => {
-        this.$emit('deleted', this.data.id);
+      axios.delete(`/replies/${this.dataReply.id}`).then(response => {
+        this.$emit('deleted', this.dataReply.id);
         /*if(response.status == 200) {
           $(this.$el).fadeOut(300, function() {
             flashMessage('Reply has been deleted!');
@@ -93,9 +93,9 @@ export default {
       })
     },
     markBestReply() {
-      axios.post(`/replies/${this.data.id}/best`);
+      axios.post(`/replies/${this.dataReply.id}/best`);
 
-      window.events.$emit('best-reply-selected', this.data.id);
+      window.events.$emit('best-reply-selected', this.dataReply.id);
     }
   }
 }
