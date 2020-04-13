@@ -2248,6 +2248,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2423,8 +2426,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['isSubscribedTo'],
   data: function data() {
@@ -2513,15 +2514,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialRepliesCount'],
+  props: ['initialRepliesCount', 'thread'],
   components: {
     Replies: _components_RepliesComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     Subscribe: _components_SubscribeComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      repliesCount: this.initialRepliesCount
+      repliesCount: this.thread_replies_count,
+      locked: this.thread.locked
     };
+  },
+  methods: {
+    toggleLock: function toggleLock() {
+      axios[this.locked ? 'delete' : 'post']("/locked-threads/".concat(this.thread.slug));
+      this.locked = !this.locked;
+    }
   }
 });
 
@@ -56529,10 +56537,16 @@ var render = function() {
         on: { fetchByPage: _vm.fetch }
       }),
       _vm._v(" "),
-      _c("new-reply", {
-        attrs: { endpoint: _vm.endpoint },
-        on: { created: _vm.add }
-      })
+      _vm.$parent.locked
+        ? _c("p", [
+            _vm._v(
+              "\n    This thread has been locked. No more replies are allowed.\n  "
+            )
+          ])
+        : _c("new-reply", {
+            attrs: { endpoint: _vm.endpoint },
+            on: { created: _vm.add }
+          })
     ],
     2
   )
@@ -56716,10 +56730,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("button", { class: _vm.classes, on: { click: _vm.subscribe } }, [
-      _vm._v("Subscribe")
-    ])
+  return _c("button", { class: _vm.classes, on: { click: _vm.subscribe } }, [
+    _vm._v("Subscribe")
   ])
 }
 var staticRenderFns = []
@@ -69019,6 +69031,9 @@ module.exports = {
   owns: function owns(model) {
     var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
     return model[prop] === user.id;
+  },
+  isAdmin: function isAdmin() {
+    return ['CheeVT', 'VTChee'].includes(user.name);
   }
 };
 
