@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -27,6 +31,10 @@
                             <option value="{{ $board->id }}" {{ ( old('board_id') == $board->id ) ? 'selected' : '' }}>{{ $board->name }}</option>
                           @endforeach
                         </select>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="6LcACu4UAAAAABrEtVRLe2Wj3_B0HNXG2ZMiHo1z"></div>
                       </div>
 
                       <div class="form-group">

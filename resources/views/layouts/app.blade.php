@@ -48,6 +48,8 @@
             margin: 0 10px 10px 0;
         }
     </style>
+
+    @yield('head')
 </head>
 <body>
     <div id="app">
