@@ -4,13 +4,26 @@ namespace Tests\Feature;
 
 use App\Thread;
 use Tests\TestCase;
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class CreateThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, MockeryPHPUnitIntegration;
+
+    public function setUp():void
+    {
+        parent::setUp();
+        
+        app()->singleton(Recaptcha::class, function() {
+            return \Mockery::mock(Recaptcha::class, function($m) {
+                $m->shouldReceive('passes')->andReturn(true);
+            });
+        });
+    }
 
     /** @test */
     function guest_cannot_create_new_threads() {
@@ -74,7 +87,7 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals($thread->slug, 'chee-vt');
 
-        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();        
+        $thread = $this->postJson(route('threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token'])->json();        
 
         $this->assertEquals($thread['slug'], 'chee-vt-' . $thread['id']);
     }
@@ -85,7 +98,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create('App\Thread', ['title' => 'Chee VT 23']);
 
-        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
+        $thread = $this->postJson(route('threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token'])->json();
 
         $this->assertEquals($thread['slug'], 'chee-vt-23-' . $thread['id']);
     }
@@ -99,6 +112,14 @@ class CreateThreadsTest extends TestCase
 
         $this->publishThread(['board_id' => 5])
             ->assertSessionHasErrors('board_id');
+    }
+
+    /** @test */
+    public function a_thread_requires_recaptcha_verification() {
+        unset(app()[Recaptcha::class]);
+
+        $this->publishThread(['g-recaptcha-response' => 'test'])
+            ->assertSessionHasErrors('g-recaptcha-response');
     }
 
     protected function publishThread($overrides = [], $authenticatedUserOverrides = []) {

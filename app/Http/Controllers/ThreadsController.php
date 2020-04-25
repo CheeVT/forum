@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Board;
-use Zttp\Zttp;
 use App\Thread;
 use App\Trending;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
 use Illuminate\Support\Facades\Auth;
@@ -54,24 +54,15 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Recaptcha $recaptcha)
     {
         
         $request->validate([
             'title' => 'required|spamfree',
             'body' => 'required|spamfree',
-            'board_id' => 'required|exists:boards,id'
+            'board_id' => 'required|exists:boards,id',
+            'g-recaptcha-response' => ['required', $recaptcha]
         ]);
-
-        $response = Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('services.recaptcha.secret_key'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => $_SERVER['REMOTE_ADDR']
-        ]);
-
-        if(! $response->json()['success'] ) {
-            throw new \Exception('Recaptcha field!');
-        }
 
         $thread = Thread::create([
             //'slug' => $request->title,
