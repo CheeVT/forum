@@ -123,9 +123,14 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(Request $request, $boardId, Thread $thread)
     {
-        //
+        $this->authorize('update', $thread);
+        
+        $thread->update($request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]));
     }
 
     /**
