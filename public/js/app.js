@@ -2522,13 +2522,38 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       repliesCount: this.thread_replies_count,
-      locked: this.thread.locked
+      locked: this.thread.locked,
+      title: this.thread.title,
+      body: this.thread.body,
+      form: {},
+      editing: false
     };
+  },
+  created: function created() {
+    this.resetForm();
   },
   methods: {
     toggleLock: function toggleLock() {
       axios[this.locked ? 'delete' : 'post']("/locked-threads/".concat(this.thread.slug));
       this.locked = !this.locked;
+    },
+    update: function update() {
+      var _this = this;
+
+      var uri = "/threads/".concat(this.thread.board.slug, "/").concat(this.thread.slug);
+      axios.patch(uri, this.form).then(function () {
+        _this.editing = false;
+        _this.title = _this.form.title;
+        _this.body = _this.form.body;
+        flashMessage('Your thread has been updated!');
+      });
+    },
+    resetForm: function resetForm() {
+      this.form = {
+        title: this.thread.title,
+        body: this.thread.body
+      };
+      this.editing = false;
     }
   }
 });

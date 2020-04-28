@@ -5,30 +5,9 @@
   <div class="container">
     <div class="row justify-content-center thread">
         <div class="col-md-8">
-            <div class="card">
-              <div class="article-header">
-                <img src="{{ $thread->owner->avatar_path }}" width="40" height="40" style="margin: 10px;" />
-                <div class="card-header article-header--title">
-                  <h2>{{ $thread->title }}</h2>
-                  <span class="thread__author">Created by: <a href="{{ route('profiles.show', $thread->owner) }}"><span>{{ $thread->owner->name }}</span></a></span>
-                  <span class="thread__created-at">{{ date( 'd.m.Y. h:i', strtotime( $thread->created_at ) ) }}</span>
-                </div>
+          @include('threads._question')            
 
-                @can('delete', $thread)
-                <form action="{{ $thread->show_url() }}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger mr-3">Delete thread</button>
-                </form>
-                @endcan
-              </div>
-
-              <div class="card-body">
-                  {{ $thread->body }}
-              </div>
-            </div>
-
-            <replies repliesStore="/threads/{{$thread->board->slug}}/{{$thread->slug}}/replies" @removed="repliesCount--" @added="repliesCount++"></replies>
+          <replies repliesStore="/threads/{{$thread->board->slug}}/{{$thread->slug}}/replies" @removed="repliesCount--" @added="repliesCount++"></replies>
            
 
             {{-- <div class="pt-3">
