@@ -142,4 +142,11 @@ class ThreadTest extends TestCase
         $this->assertTrue($this->thread->locked);
     }
 
+    /** @test */
+    public function a_thread_body_is_senitized_automatically() {
+        $thread = make('App\Thread', ['body' => '<script>alert("test")</script><p>Hello world!</p>']);
+
+        $this->assertEquals('<p>Hello world!</p>', $thread->body);
+    }
+
 }

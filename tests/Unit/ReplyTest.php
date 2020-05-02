@@ -65,4 +65,11 @@ class ReplyTest extends TestCase
 
         $this->assertTrue($reply->fresh()->isBest());
     }
+
+    /** @test */
+    public function a_reply_body_is_senitized_automatically() {
+        $reply = make('App\Reply', ['body' => '<script>alert("test")</script><p>Hello world!</p>']);
+
+        $this->assertEquals('<p>Hello world!</p>', $reply->body);
+    }
 }
