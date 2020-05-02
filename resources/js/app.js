@@ -26,6 +26,7 @@ Vue.component('user-notifications', require('./components/UserNotificationsCompo
 Vue.component('favorite', require('./components/FavoriteComponent.vue').default);
 Vue.component('thread-view', require('./pages/Thread.vue').default);
 Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
+Vue.component('wysiwyg', require('./components/wysiwyg.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

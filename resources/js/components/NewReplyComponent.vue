@@ -3,7 +3,7 @@
   <div v-if="loggedIn" class="reply-store">
     <div class="form-group">
       <label for="body">Add reply</label>
-      <textarea 
+      <!--<textarea 
         name="body" 
         id="body" 
         rows="10" 
@@ -11,7 +11,8 @@
         placeholder="If you have something to say, fill in and submit :-)"
         required
         v-model="body">
-      </textarea>
+      </textarea>-->
+      <wysiwyg name="body" v-model="body" placeholder="Have something to say?" :shouldClear="completed"></wysiwyg>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary" @click="addReply">Add</button>
@@ -30,7 +31,8 @@ export default {
   props: ['endpoint'],
   data() {
     return {
-      body: ''
+      body: '',
+      completed: false
     }
   },
   computed: {
@@ -82,6 +84,7 @@ export default {
     addReply() {
       axios.post(this.endpoint, {body: this.body}).then(response => {
         this.body = '';
+        this.completed =  true;
         console.log('RESP DATA', response.data)
         flashMessage('Reply has been created!');
         this.$emit('created', response.data)

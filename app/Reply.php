@@ -68,4 +68,8 @@ class Reply extends Model
     public function show_url() {
         return $this->thread->show_url() . '#reply-' . $this->id;
     }
+
+    public function getBodyAttribute($body) {
+        return \Purify::clean($body);
+    }
 }

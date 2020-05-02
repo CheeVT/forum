@@ -4,6 +4,7 @@ namespace App;
 
 use App\Filters\ThreadFilters;
 use App\Events\ThreadHasNewReply;
+use Stevebauman\Purify\Facades\Purify;
 use App\Notifications\ThreadIsUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -145,6 +146,11 @@ class Thread extends Model
 
     public function unlock() {
         $this->update(['locked' => false]);
+    }
+
+    public function getBodyAttribute($body) {
+        //return $body;
+        return Purify::clean($body);
     }
 
 }
